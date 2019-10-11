@@ -1,0 +1,43 @@
+{% extends 'donors/base.html' %}
+{% block content %}
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <div class="body1">
+        <div class="mycontainer">
+            <center>
+                <form  method="post" style="max-width: 90px; padding-top: 3em;">
+                    <h1 class="text-center">Entry</h1>
+                    <div class="mb-3 mx-automargin">
+                        {% csrf_token %}
+                        <center>{{form.as_p}}</center>
+                    </div>
+                    <button onclick="getLocation()", class="btn btn-info" id="getLocationBtn">Get Location</button>
+                    <button type="submit" value="Submit" class="btn btn-md my-3 btn-dark mx-5">Submit</button>
+                </form>
+            </center>
+        </div>
+    </div>
+
+
+    <script>
+    latitude = document.getElementById("id_latitude");
+    longitude = document.getElementById("id_longitude");
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else { 
+            console.log("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function showPosition(position){
+        latitude.setAttribute("value",position.coords.latitude);
+        longitude.setAttribute("value",position.coords.longitude);
+        latitude.style.display = 'none';
+        longitude.style.display = 'none';
+        document.getElementById("getLocationBtn").style.display = 'none';
+        $('label[for="id_longitude"]').hide ();
+        $('label[for="id_latitude"]').hide ();
+    }
+    window.onload = getLocation();
+    </script>
+{% endblock content %}
